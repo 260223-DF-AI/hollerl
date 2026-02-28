@@ -247,13 +247,48 @@ def main():
     """Main function with interactive menu."""
     # TODO: Implement menu loop
     # Use while True and break on exit choice
-    pass
-
+    while True:
+        display_menu()
+        choice = input()
+        match choice:
+            case "1":
+                display_all_contacts(contacts)
+            case "2":
+                name = input("Enter name: ")
+                phone = input("Enter phone: ")
+                email = input("Enter email: ")
+                category = input("Enter category (friend, family, work, other): ")
+                add_contact(contacts, name, phone, email, category)
+            case "3":
+                search_choice = input("Search by (1) Name, (2) Category, (3) Phone: ")
+                if search_choice == "1":
+                    query = input("Enter name to search: ")
+                    results = search_by_name(contacts, query)
+                elif search_choice == "2":
+                    category = input("Enter category to search: ")
+                    results = filter_by_category(contacts, category)
+                else:
+                    phone = input("Enter phone to search: ")
+                    results = [find_by_phone(contacts, phone)]
+                for contact in results:
+                    display_contact_details(contact)
+            case "4":
+                phone = input("Enter phone of contact to update: ")
+                field = input("Enter field to update (name, phone, email, category): ")
+                new_value = input(f"Enter new value for {field}: ")
+                update_contact(contacts, phone, field, new_value)
+            case "5":
+                phone = input("Enter phone of contact to delete: ")
+                delete_contact(contacts, phone)
+            case "6":
+                display_statistics(contacts)
+            case "0":
+                break
 
 # =============================================================================
 # Test Code - Add sample data and test functions
 # =============================================================================
-
+"""
 if __name__ == "__main__":
     print("Contact Book Application")
     print("-" * 40)
@@ -295,6 +330,6 @@ if __name__ == "__main__":
     print("TASK 5: Displaying Statistics")
     print("-" * 40)
     display_statistics(contacts)
-    
+"""    
     # STRETCH: Uncomment to run interactive menu
-    # main()
+main()
