@@ -1,0 +1,4 @@
+date,store_id,product,quantity,price,total
+2024-01-15,STORE001,Widget A,10,29.99,299.9
+2024-01-15,STORE002,Gadget B,5,49.99,249.95
+2024-01-17,STORE001,Widget A,12,29.99,359.88

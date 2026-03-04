@@ -1,0 +1,8 @@
+date,store_id,product,quantity,price
+2024-01-15,STORE001,Widget A,10,29.99
+2024-01-15,STORE002,Gadget B,5,49.99
+invalid-date,STORE001,Widget A,3,29.99
+2024-01-16,STORE003,Widget C,-2,19.99
+2024-01-16,,Product X,8,15.00
+2024-01-16,STORE002,Gadget B,abc,49.99
+2024-01-17,STORE001,Widget A,12,29.99
