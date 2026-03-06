@@ -20,14 +20,36 @@ def test_clean_data_removes_duplicates(sample_data):
     """Test that clean_data removes duplicate rows."""
     dupe_data = pd.concat([sample_data, sample_data.loc[[1]]], ignore_index=True)
     cleaned_data = clean_data(dupe_data)
-    assert pd.testing.assert_frame_equal(sample_data(), cleaned_data.drop(columns=["total_sales"]))
+    pd.testing.assert_frame_equal(sample_data, cleaned_data.drop(columns=["total_sales"]))
+
+def test_clean_data_by_total_sales_calculations(sample_data):
+    sample_data["total_sales"] = sample_data["quantity"] * sample_data["unit_price"]
+    cleaned_data = clean_data(sample_data)
+    pd.testing.assert_frame_equal(cleaned_data, sample_data)
+
 
 def test_sales_by_category_calculation(sample_data):
-    """Test that category totals are calculated correctly."""
-    pass
+    category_data = sales_by_category(clean_data(sample_data))
+    assert category_data["total_sales"].mean() == clean_data(sample_data)["total_sales"].sum()
+
+
+def test_sales_by_region_calculation(sample_data):
+    region_data = sales_by_region(clean_data(sample_data))
+    assert region_data["total_sales"].sum() == clean_data(sample_data)["total_sales"].sum()
+
 
 def test_top_products_returns_correct_count(sample_data):
-    """Test that top_products returns requested number of items."""
-    pass
+    assert len(top_products(clean_data(sample_data))) == 2
 
-# Add at least 5 more tests
+
+def test_top_products_returns_correct_quantity(sample_data):
+    assert top_products(clean_data(sample_data))["units_sold"].sum() == clean_data(sample_data)["quantity"].sum()
+
+
+def test_daily_sales(sample_data):
+    assert (daily_sales_trend(clean_data(sample_data))["total_sales"].sum() ==
+            clean_data(sample_data)["total_sales"].sum())
+
+def test_customer_analysis(sample_data):
+    assert (customer_analysis(clean_data(sample_data))["total_spent"].sum() ==
+            clean_data(sample_data)["total_sales"].sum())
