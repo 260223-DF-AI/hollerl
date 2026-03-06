@@ -1,0 +1,4 @@
+order_id,customer_id,order_date,product_name,category,quantity,unit_price,region
+1001,C001,2024-01-05,Laptop Pro,Electronics,1,1299.99,North
+1002,C002,2024-01-05,Wireless Mouse,Electronics,2,29.99,South
+1003,C001,2024-01-06,USB Cable,Accessories,3,9.99,North

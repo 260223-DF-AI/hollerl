@@ -1,0 +1,31 @@
+=== Text Analysis Report ===
+    Generated: 2026-03-06 11:36:27
+
+    Document Statistics:
+     - Word Count: 476
+     - Unique Words: 245
+     - Sentence Count: 24
+     - Average Word Length: 4.44
+     - Average Sentence Length: 5.58
+
+    Top 10 Words (excluding stopwords):
+     1. the (30) - (0.06%)
+     2. and (19) - (0.04%)
+     3. of (15) - (0.03%)
+     4. a (15) - (0.03%)
+     5. wolves (13) - (0.03%)
+     6. they (11) - (0.02%)
+     7. in (10) - (0.02%)
+     8. pack (10) - (0.02%)
+     9. to (9) - (0.02%)
+     10. their (9) - (0.02%)
+
+     Top 5 Bigrams:
+     1. "wolves" (hunt)
+     2. "hunt" (in)
+     3. "in" (packs)
+     4. "packs" (and)
+     5. "and" (have)
+
+     Readability:
+     - Flesch Reading Ease: 186.70 (Very Easy (5th Grade - 11-year-olds))
