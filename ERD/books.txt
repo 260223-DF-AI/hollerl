@@ -1,0 +1,38 @@
+Entity,Attributes,Primary Key
+Customers, (Name, Email, Phone, Address,), several
+Books, (title, ISBN, price, publication date, page count), ISBN
+Publisher, (name, contact info, books), name
+Author, (name, bio, books), name
+Orders, (books, quantity, status), id?
+Reviews, (book, rating, optional text), customer?
+
+
+Books -> Publishers: M:1, no
+Books -> Authors: M:M, yes
+Customers -> Orders: 1:M, no
+Orders -> Books: M:M, yes
+Customers -> Reviews: 1:M, no
+Reviews -> Books: M:1, no
+
+CREATE TABLE Customers (
+    customer_id INT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    phone VARCHAR(50),
+    address VARCHAR(500)
+)
+
+CREATE TABLE Books (
+    ISBN VARCHAR(20) PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    price DECIMAL(8,2),
+    publication_date DATE,
+    page_count INT
+)
+
+CREATE TABLE Reviews (
+    reviewer varchar(100) PRIMARY KEY,
+    book varchar(200),
+    rating INT CHECK (rating BETWEEN 1 AND 5),
+    review_text TEXT,
+)
