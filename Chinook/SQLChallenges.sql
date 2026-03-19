@@ -173,37 +173,82 @@ LIMIT 1;
 -- plan for them is the same, or different.
 
 -- 1. which artists did not make any albums at all?
-
+SELECT name FROM artist WHERE artist_id NOT IN (SELECT artist_id FROM album);
 
 -- 2. which artists did not record any tracks of the Latin genre?
-
+SELECT name FROM artist WHERE artist_id NOT IN (
+    SELECT artist_id FROM album
+    INNER JOIN track ON album.album_id = track.album_id
+    INNER JOIN genre ON track.genre_id = genre.genre_id
+    WHERE genre.name = 'Latin'
+);
 
 -- 3. which video track has the longest length? (use media type table)
-
+SELECT track.name, track.milliseconds
+FROM track
+INNER JOIN media_type ON track.media_type_id = media_type.media_type_id
+WHERE media_type.name LIKE '%video%'
+ORDER BY track.milliseconds DESC
+LIMIT 1;
 
 -- 4. boss employee (the one who reports to nobody)
-
+SELECT first_name || ' ' || last_name as full_name FROM employee WHERE reports_to IS NULL;
 
 -- 5. how many audio tracks were bought by German customers, and what was
 --    the total price paid for them?
+SELECT COUNT(*) as num_audio_tracks, SUM(invoice_line.unit_price * invoice_line.quantity) as total_price
+FROM invoice_line
+INNER JOIN invoice ON invoice_line.invoice_id = invoice.invoice_id
+INNER JOIN customer ON invoice.customer_id = customer.customer_id
+INNER JOIN track ON invoice_line.track_id = track.track_id
+INNER JOIN media_type ON track.media_type_id = media_type.media_type_id
+WHERE media_type.name LIKE '%audio%' AND customer.country = 'Germany';
 
 
 -- 6. list the names and countries of the customers supported by an employee
 --    who was hired younger than 35.
+SELECT customer.first_name || ' ' || customer.last_name as full_name, customer.country
+FROM customer
+INNER JOIN employee ON customer.support_rep_id = employee.employee_id
+WHERE employee.hire_date > (CURRENT_DATE - INTERVAL '35 years');
 
 
 -- DML exercises
 
 -- 1. insert two new records into the employee table.
-
+INSERT INTO employee (last_name, first_name, title, reports_to, email) VALUES
+('John', 'Doe', 'IT Staff', 6, 'john.doe@example.com'),
+('Jane', 'Smith', 'Sales Support Agent', 2, 'jane.smith@example.com');
 
 -- 2. insert two new records into the tracks table.
-
+INSERT INTO track (name, album_id, media_type_id, genre_id, composer, milliseconds, bytes, unit_price) VALUES
+('New Track 1', 1, 1, 1, 'Composer 1', 200000, 5000000, 0.99),
+('New Track 2', 1, 1, 1, 'Composer 2', 250000, 6000000, 0.99);
 
 -- 3. update customer Aaron Mitchell's name to Robert Walter
-
+UPDATE customer
+SET first_name = 'Robert', last_name = 'Walter'
+WHERE first_name = 'Aaron' AND last_name = 'Mitchell';
 
 -- 4. delete one of the employees you inserted.
-
+DELETE FROM employee
+WHERE first_name = 'John' AND last_name = 'Doe';
 
 -- 5. delete customer Robert Walter.
+DELETE FROM invoice_line
+WHERE invoice_id IN (
+    SELECT invoice_id FROM invoice
+    WHERE customer_id IN (
+        SELECT customer_id FROM customer
+        WHERE first_name = 'Robert' AND last_name = 'Walter'
+    )
+);
+
+DELETE FROM invoice
+WHERE customer_id IN (
+    SELECT customer_id FROM customer
+    WHERE first_name = 'Robert' AND last_name = 'Walter'
+);
+
+DELETE FROM customer
+WHERE first_name = 'Robert' AND last_name = 'Walter';
