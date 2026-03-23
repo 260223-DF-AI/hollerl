@@ -126,6 +126,17 @@ UPDATE user SET col1 = val1,... WHERE user_id = whatever;
 - Table structure with effective/end dates
 - Sample MERGE statement for handling updates
 
+MERGE dataset.oldusers
+USING dataset.newusers
+ON dataset.oldusers.user_id = dataset.newusers.user_id
+
+WHEN MATCHED THEN
+  UPDATE SET col = dataset.newusers.col
+
+WHEN NOT MATCHED THEN
+  INSERT (user_id, cols)
+  VALUES (val1, val2, etc.);
+
 ### Part 5: Peer Review
 
 Swap designs with your partner and complete a review checklist:
