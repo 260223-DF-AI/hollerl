@@ -661,6 +661,50 @@ Write a prompt that generates a Python function with ALL of these constraints:
 
 ---
 
+Generate this python function: - Function name: validate_order_data - Input: pandas DataFrame - Must check for: null values, negative amounts, future dates, duplicate IDs - Output: a dictionary with check results - Maximum 30 lines of code - Must include type hints - Must include a docstring - No external libraries beyond pandas and datetime
+
+from typing import Dict
+import pandas as pd
+from datetime import datetime
+
+def validate_order_data(df: pd.DataFrame) -> Dict[str, bool]:
+    """
+    Validate an order dataset for common data quality issues.
+
+    Checks performed:
+    - Null values in any column
+    - Negative values in 'amount' column
+    - Future dates in 'date' column
+    - Duplicate values in 'order_id' column
+
+    Args:
+        df (pd.DataFrame): Input DataFrame containing order data.
+
+    Returns:
+        Dict[str, bool]: Dictionary with validation results.
+    """
+    results: Dict[str, bool] = {}
+
+    results["has_nulls"] = df.isnull().any().any()
+
+    if "amount" in df.columns:
+        results["has_negative_amounts"] = (df["amount"] < 0).any()
+    else:
+        results["has_negative_amounts"] = False
+
+    if "date" in df.columns:
+        now = datetime.now()
+        results["has_future_dates"] = (pd.to_datetime(df["date"], errors="coerce") > now).any()
+    else:
+        results["has_future_dates"] = False
+
+    if "order_id" in df.columns:
+        results["has_duplicate_ids"] = df["order_id"].duplicated().any()
+    else:
+        results["has_duplicate_ids"] = False
+
+    return results
+
 ## Submission
 
 For each challenge, document:
