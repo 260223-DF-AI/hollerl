@@ -16,7 +16,10 @@ def create_and_manipulate_tensor():
     
     # 3. Move to GPU if available
     # TODO: Define the device and move the tensor
-    
+
+    device = torch.device("cuda") # if torch.cuda.is_available() else "cpu")
+    reshaped_tensor = reshaped_tensor.to(device)
+
     print(f"Final Tensor:\n{reshaped_tensor}")
     print(f"Device: {reshaped_tensor.device}") # Uncomment when finished
     
