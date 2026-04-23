@@ -2,6 +2,7 @@ from pydantic import BaseModel, Field
 from langchain_core.tools import tool
 from langchain.agents import create_agent
 from langchain.chat_models import init_chat_model
+from langchain_community.chat_models import ChatOllama
 from langchain_ollama import ChatOllama
 # =====================================================================
 # 1. Pydantic Structured Output Schema
